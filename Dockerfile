@@ -34,7 +34,7 @@ RUN git clone https://github.com/golang/protobuf /root/go/src/github.com/golang/
 
 ## Install protoc-gen-grpc-web
 
-ENV PROTOC_GEN_GRPC_WEB_VERSION 1.0.0
+ENV PROTOC_GEN_GRPC_WEB_VERSION 1.0.2
 
 RUN git clone https://github.com/grpc/grpc-web /github/grpc-web && \
     cd /github/grpc-web && \
@@ -45,7 +45,7 @@ RUN git clone https://github.com/grpc/grpc-web /github/grpc-web && \
 
 ## Install protoc-gen-ts
 
-ENV PROTOC_GEN_TS_VERSION 0.7.8-pre.217169b
+ENV PROTOC_GEN_TS_VERSION 0.8.0
 
 RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION && \
     ln -s /node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
