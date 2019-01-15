@@ -46,6 +46,7 @@ RUN git clone https://github.com/grpc/grpc-web /github/grpc-web && \
 ## Install protoc-gen-ts
 
 ENV PROTOC_GEN_TS_VERSION 0.9.0
+ENV GOOGLE_PROTOBUF_VERSION 3.6.1
 
-RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION && \
+RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION google-protobuf@$GOOGLE_PROTOBUF_VERSION && \
     ln -s /node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
