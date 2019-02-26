@@ -16,13 +16,13 @@ RUN apt-get update && apt-get install -y \
 
 ENV PROTOBUF_VERSION 3.6.1
 
-RUN wget https://github.com/google/protobuf/releases/download/v$PROTOBUF_VERSION/protoc-$PROTOBUF_VERSION-linux-x86_64.zip && \
+RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOBUF_VERSION/protoc-$PROTOBUF_VERSION-linux-x86_64.zip && \
     unzip protoc-$PROTOBUF_VERSION-linux-x86_64.zip -d /usr/local/ && \
     rm -rf protoc-$PROTOBUF_VERSION-linux-x86_64.zip
 
 ## Install protoc-gen-go
 
-ENV PROTOC_GEN_GO_VERSION v1.2.0
+ENV PROTOC_GEN_GO_VERSION v1.3.0
 
 RUN git clone https://github.com/golang/protobuf /root/go/src/github.com/golang/protobuf && \
     cd /root/go/src/github.com/golang/protobuf && \
