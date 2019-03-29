@@ -34,7 +34,7 @@ RUN git clone https://github.com/golang/protobuf /root/go/src/github.com/golang/
 
 ## Install protoc-gen-grpc-web
 
-ENV PROTOC_GEN_GRPC_WEB_VERSION 1.0.3
+ENV PROTOC_GEN_GRPC_WEB_VERSION 1.0.4
 
 RUN git clone https://github.com/grpc/grpc-web /github/grpc-web && \
     cd /github/grpc-web && \
