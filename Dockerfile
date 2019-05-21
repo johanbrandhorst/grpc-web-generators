@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     unzip \
     libprotoc-dev \
+    python3-pip \
     golang
 
 ## Install protoc
@@ -50,3 +51,7 @@ ENV GOOGLE_PROTOBUF_VERSION 3.6.1
 
 RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION google-protobuf@$GOOGLE_PROTOBUF_VERSION && \
     ln -s /node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
+    
+## Install protoc-gen-python
+
+RUN pip3 install grpcio-tools
