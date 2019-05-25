@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: docker:latest
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: docker build .
+workflows:
+  version: 2
+  all:
+    jobs:
+      - build
