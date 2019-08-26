@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
 
 ## Install protoc
 
-ENV PROTOBUF_VERSION 3.9.0
+ENV PROTOBUF_VERSION 3.9.1
 
 RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOBUF_VERSION/protoc-$PROTOBUF_VERSION-linux-x86_64.zip && \
     unzip protoc-$PROTOBUF_VERSION-linux-x86_64.zip -d /usr/local/ && \
