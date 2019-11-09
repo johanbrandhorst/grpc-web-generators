@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
 
 ## Install protoc
 
-ENV PROTOBUF_VERSION 3.9.1
+ENV PROTOBUF_VERSION 3.10.0
 
 RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOBUF_VERSION/protoc-$PROTOBUF_VERSION-linux-x86_64.zip && \
     unzip protoc-$PROTOBUF_VERSION-linux-x86_64.zip -d /usr/local/ && \
@@ -35,7 +35,7 @@ RUN git clone https://github.com/golang/protobuf /root/go/src/github.com/golang/
 
 ## Install protoc-gen-grpc-web
 
-ENV PROTOC_GEN_GRPC_WEB_VERSION 1.0.6
+ENV PROTOC_GEN_GRPC_WEB_VERSION 1.0.7
 
 RUN git clone https://github.com/grpc/grpc-web /github/grpc-web && \
     cd /github/grpc-web && \
@@ -46,7 +46,7 @@ RUN git clone https://github.com/grpc/grpc-web /github/grpc-web && \
 
 ## Install protoc-gen-ts
 
-ENV PROTOC_GEN_TS_VERSION 0.10.0
+ENV PROTOC_GEN_TS_VERSION 0.12.0
 
 RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION google-protobuf@$PROTOBUF_VERSION && \
     ln -s /node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
