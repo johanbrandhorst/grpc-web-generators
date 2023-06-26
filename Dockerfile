@@ -9,6 +9,9 @@ FROM ubuntu:latest as build
 
 ENV DEBIAN_FRONTEND noninteractive
 
+WORKDIR /usr/app
+#COPY ./ /usr/app
+
 RUN apt-get update && apt-get install -y \
     automake \
     build-essential \
