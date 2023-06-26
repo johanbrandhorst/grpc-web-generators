@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y \
 
 ## Install protoc
 
-ENV PROTOBUF_VERSION v23.3
+ENV PROTOBUF_VERSION 23.3
 
 RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOBUF_VERSION/protoc-$PROTOBUF_VERSION-linux-x86_64.zip && \
     unzip protoc-$PROTOBUF_VERSION-linux-x86_64.zip -d /usr/local/ && \
@@ -62,7 +62,9 @@ RUN git clone https://github.com/grpc/grpc-web /github/grpc-web && \
 
 ENV PROTOC_GEN_GRPC_VERSION 2.0.4
 
-RUN npm install protoc-gen-grpc@$PROTOC_GEN_GRPC_VERSION google-protobuf@$PROTOBUF_VERSION && \
+#google-protobuf@$PROTOBUF_VERSION
+
+RUN npm install protoc-gen-grpc@$PROTOC_GEN_GRPC_VERSION  && \
     ln -s ./node_modules/.bin/protoc-gen-grpc /usr/local/bin/protoc-gen-grpc
 
 ## Install protoc-gen-ts
@@ -70,8 +72,9 @@ RUN npm install protoc-gen-grpc@$PROTOC_GEN_GRPC_VERSION google-protobuf@$PROTOB
 #WORKDIR /usr/app/protoc-gen-ts
 
 ENV PROTOC_GEN_TS_VERSION 0.15.0
+# google-protobuf@$PROTOBUF_VERSION
 
-RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION google-protobuf@$PROTOBUF_VERSION && \
+RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION  && \
     ln -s ./node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
 
 
