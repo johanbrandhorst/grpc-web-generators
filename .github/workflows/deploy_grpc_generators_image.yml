@@ -7,8 +7,9 @@ on:
   push:
     # Publish `master` as Docker `latest` image.
     branches:
-      - main
+      - master
       - develop
+      #- main
       #- seed
 
     # Publish `v1.2.3` tags as releases.
