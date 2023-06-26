@@ -58,17 +58,21 @@ RUN git clone https://github.com/grpc/grpc-web /github/grpc-web && \
 
 ## Install protoc-gen (npm)
 
+#WORKDIR /usr/app/protoc-gen
+
 ENV PROTOC_GEN_GRPC_VERSION 2.0.4
 
 RUN npm install protoc-gen-grpc@$PROTOC_GEN_GRPC_VERSION google-protobuf@$PROTOBUF_VERSION && \
-    ln -s /node_modules/.bin/protoc-gen-grpc /usr/local/bin/protoc-gen-grpc
+    ln -s ./node_modules/.bin/protoc-gen-grpc /usr/local/bin/protoc-gen-grpc
 
 ## Install protoc-gen-ts
+
+#WORKDIR /usr/app/protoc-gen-ts
 
 ENV PROTOC_GEN_TS_VERSION 0.15.0
 
 RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION google-protobuf@$PROTOBUF_VERSION && \
-    ln -s /node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
+    ln -s ./node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
 
 
 ## Install protoc-gen-python
