@@ -41,13 +41,13 @@ RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOBU
 
 ENV PROTOC_GEN_GO_VERSION v1.5.3
 
-RUN git clone https://github.com/golang/protobuf ${APP_ROOT}/go/src/github.com/golang/protobuf && \
-    cd ${APP_ROOT}/go/src/github.com/golang/protobuf && \
+RUN git clone https://github.com/golang/protobuf $APP_ROOT/go/src/github.com/golang/protobuf && \
+    cd $APP_ROOT/go/src/github.com/golang/protobuf && \
     git fetch --all --tags --prune && \
     git checkout tags/$PROTOC_GEN_GO_VERSION && \
     go install ./protoc-gen-go && \
-    cp ${APP_ROOT}/go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go && \
-    rm -rf ${APP_ROOT}/go/src
+    cp $APP_ROOT/go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go && \
+    rm -rf $APP_ROOT/go/src
 
 ## Install protoc-gen-grpc-web
 
@@ -99,6 +99,8 @@ WORKDIR ${APP_ROOT}
 
 # protoc
 COPY --from=build /usr/local/bin /usr/local/bin
+
+RUN echo COPYING package to  ${APP_ROOT}/package.json 
 
 COPY --from=build ${APP_ROOT}/package.json ${APP_ROOT}/package.json
 
