@@ -28,7 +28,7 @@ This is an updated version of [https://github.com/johanbrandhorst/grpc-web-gener
 
 
 ### Python
-    docker compose run --rm protocomp python -m grpc_tools.protoc -I/protos \
+    docker compose run --rm protocomp python3 -m grpc_tools.protoc -I/protos \
         --python_out=/generated \
         --pyi_out=/generated \
         --grpc_python_out=/generated \

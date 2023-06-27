@@ -46,12 +46,15 @@ RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOBU
 ## https://docs.docker.com/language/golang/build-images/
 ENV PROTOC_GEN_GO_VERSION v1.5.3
 
+ENV GOPATH ${APP_ROOT}/go
+
 RUN git clone https://github.com/golang/protobuf $APP_ROOT/go/src/github.com/golang/protobuf && \
     cd $APP_ROOT/go/src/github.com/golang/protobuf && \
     git fetch --all --tags --prune && \
     git checkout tags/$PROTOC_GEN_GO_VERSION && \
     go install ./protoc-gen-go && \
-    cp $APP_ROOT/go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go && \
+    ls -Al $GOPATH && \
+    cp $GOPATH/bin/protoc-gen-go /usr/local/bin/protoc-gen-go && \
     rm -rf $APP_ROOT/go/src
    
 
