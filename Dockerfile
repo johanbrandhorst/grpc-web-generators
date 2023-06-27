@@ -93,12 +93,12 @@ RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION  && \
 
 RUN pip3 install grpcio-tools
 
-RUN echo "usr/local/lib: ---->" && ls -Al /usr/local/lib &&\
+RUN echo "usr/local/lib: ---->" && ls -Al /usr/local/lib/python3.9 &&\
     echo "usr/local/bin: ---->" && ls -Al /usr/local/bin
 
 # deployment stage: using previous build to reduce image size
 
-FROM node:18.16.1-bullseye
+FROM node:18.16.1-bullseye-slim
 
 ENV DEBIAN_FRONTEND noninteractive \
     LANG=C.UTF-8 \
@@ -128,7 +128,7 @@ RUN npm install --production
 
 # copy python files
 
-COPY  --from=build /usr/local/lib/python3.10/dist-packages /usr/local/lib/python3.10/dist-packages
+COPY  --from=build /usr/local/lib/python3.9/dist-packages /usr/local/lib/python3.9/dist-packages
 #COPY --from=build /usr/local/bin/protoc-gen-python /usr/local/bin/protoc-gen-python
 
 #  COPY --from=build /usr/local/include/google /usr/local/include/google
