@@ -13,7 +13,7 @@ ENV DEBIAN_FRONTEND noninteractive \
     PYTHONDONTWRITEBYTECODE=1 \
     APP_ROOT=/usr/app
 
-WORKDIR ${APP_ROOT}
+WORKDIR $APP_ROOT
 #COPY ./ /usr/app
 
 RUN apt-get update && apt-get install -y \
@@ -93,7 +93,7 @@ RUN pip3 install grpcio-tools
 FROM node:18.16.1-bullseye-slim
 
 
-WORKDIR ${APP_ROOT}
+WORKDIR $APP_ROOT
 
 # copy all build files to new image
 
@@ -102,7 +102,7 @@ COPY --from=build /usr/local/bin /usr/local/bin
 
 RUN echo COPYING package to  $APP_ROOT/package.json 
 
-COPY --from=build ${APP_ROOT}/package.json ${APP_ROOT}/package.json
+COPY --from=build $APP_ROOT/package.json $APP_ROOT/package.json
 
 RUN npm install --production
 
