@@ -87,16 +87,22 @@ RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION  && \
     ln -s $APP_ROOT/node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
     
 ## Install python protoc plugin
-RUN pip3 install grpcio-tools
+# RUN pip3 install grpcio-tools
 
 # deployment stage: using previous build to reduce image size
 
-FROM node:18.16.1-bullseye
+FROM node:18.16.1-bullseye-slim
 
 ENV DEBIAN_FRONTEND noninteractive \
     LANG=C.UTF-8 \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
+
+RUN apt-get update && apt-get install -y \
+    python3.9 \
+    python3-pip
+
+RUN pip3 install grpcio-tools
 
 ARG APP_ROOT=/usr/app
 ENV APP_ROOT=${APP_ROOT}
@@ -115,7 +121,6 @@ COPY --from=build $APP_ROOT/package.json $APP_ROOT/package.json
 RUN npm install --production
 
 # copy python files
-
-COPY  --from=build /usr/local/lib/python3.9/dist-packages/ /usr/local/lib/python3.9/dist-packages/
+# COPY  --from=build /usr/local/lib/python3.9/dist-packages/ /usr/local/lib/python3.9/dist-packages/
 
 
