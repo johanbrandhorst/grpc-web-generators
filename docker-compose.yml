@@ -1,0 +1,32 @@
+# docker-compose.yml for gRPC generators
+
+# to build the images:  docker-compose build
+# to build start everything: docker-compose up --build
+# to build start everything after code change: docker-compose up --build
+
+version: '3.9'
+
+services:
+    protocomp:
+      #build:
+      #  context: .
+      image: ghcr.io/larasuite/grpc_generators:0.1.4
+      #restart: unless-stopped
+      volumes:
+        - ./protos:/protos
+        - ./generated:/generated
+      #ports:
+      #environment:
+      #env_file:
+      #  - ./.env.dev
+      command: 
+        - /bin/bash
+        #sh -c ""
+
+    
+volumes:
+  protos:
+  generated:
+
+ 
+
