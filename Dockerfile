@@ -5,11 +5,15 @@
 
 # Build stage
 
-FROM ubuntu:latest as build
+FROM node:18.16.1-bullseye as build
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND noninteractive \
+    LANG=C.UTF-8 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    APP_ROOT=/usr/app
 
-WORKDIR /usr/app
+WORKDIR WORKDIR ${APP_ROOT}
 #COPY ./ /usr/app
 
 RUN apt-get update && apt-get install -y \
@@ -37,13 +41,13 @@ RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOBU
 
 ENV PROTOC_GEN_GO_VERSION v1.5.3
 
-RUN git clone https://github.com/golang/protobuf /root/go/src/github.com/golang/protobuf && \
-    cd /root/go/src/github.com/golang/protobuf && \
+RUN git clone https://github.com/golang/protobuf ${APP_ROOT}/go/src/github.com/golang/protobuf && \
+    cd ${APP_ROOT}/go/src/github.com/golang/protobuf && \
     git fetch --all --tags --prune && \
     git checkout tags/$PROTOC_GEN_GO_VERSION && \
     go install ./protoc-gen-go && \
-    ln -s /root/go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go && \
-    rm -rf /root/go/src
+    cp ${APP_ROOT}/go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go && \
+    rm -rf ${APP_ROOT}/go/src
 
 ## Install protoc-gen-grpc-web
 
@@ -65,7 +69,8 @@ ENV PROTOC_GEN_GRPC_VERSION 2.0.4
 #google-protobuf@$PROTOBUF_VERSION
 
 RUN npm install protoc-gen-grpc@$PROTOC_GEN_GRPC_VERSION  && \
-    ln -s ./node_modules/.bin/protoc-gen-grpc /usr/local/bin/protoc-gen-grpc
+    cp ./node_modules/.bin/protoc-gen-grpc /usr/local/bin/protoc-gen-grpc
+    # ln -s ./node_modules/.bin/protoc-gen-grpc /usr/local/bin/protoc-gen-grpc
 
 ## Install protoc-gen-ts
 
@@ -75,7 +80,8 @@ ENV PROTOC_GEN_TS_VERSION 0.15.0
 # google-protobuf@$PROTOBUF_VERSION
 
 RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION  && \
-    ln -s ./node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
+    cp ./node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
+    # ln -s ./node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
 
 
 ## Install protoc-gen-python
@@ -84,20 +90,33 @@ RUN pip3 install grpcio-tools
 
 # deployment stage: using previous build to reduce image size
 
-# FROM build as deploy
+FROM node:18.16.1-bullseye-slim
+
+
+WORKDIR ${APP_ROOT}
 
 # copy all build files to new image
 
-# COPY --from=build /usr/local/bin/protoc-gen-go /usr/local/bin/protoc-gen-go
+# protoc
+COPY --from=build /usr/local/bin /usr/local/bin
+
+COPY --from=build ${APP_ROOT}/package.json ${APP_ROOT}/package.json
+
+RUN npm install --production
+
+# grpc-web
 # COPY --from=build /usr/local/bin/protoc-gen-grpc-web /usr/local/bin/protoc-gen-grpc-web
 # COPY --from=build /usr/local/bin/protoc-gen-grpc /usr/local/bin/protoc-gen-grpc
 # COPY --from=build /usr/local/bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
-# COPY --from=build /usr/local/bin/protoc-gen-python /usr/local/bin/protoc-gen-python
 
-# COPY --from=build /usr/local/include/google /usr/local/include/google
+# copy python files
+
+COPY  --from=build /usr/local/lib/python3.10/dist-packages /usr/local/lib/python3.10/dist-packages
+#COPY --from=build /usr/local/bin/protoc-gen-python /usr/local/bin/protoc-gen-python
+
+#  COPY --from=build /usr/local/include/google /usr/local/include/google
 # COPY --from=build /usr/local/include/grpc /usr/local/include/grpc
 # COPY --from=build /usr/local/include/grpcpp /usr/local/include/grpcpp
 # COPY --from=build /usr/local/lib/libgrpc++_reflection.a /usr/local/lib/libgrpc++_reflection.a
-
 
 

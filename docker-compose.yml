@@ -10,7 +10,7 @@ services:
     protocomp:
       #build:
       #  context: .
-      image: ghcr.io/LARAsuite/grpc-web-generators/grpc_generators:develop
+      image: ghcr.io/larasuite/grpc_generators:latest
       #restart: unless-stopped
       volumes:
         - ./protos:/protos
