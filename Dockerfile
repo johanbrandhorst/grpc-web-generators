@@ -49,8 +49,10 @@ RUN git clone https://github.com/golang/protobuf $APP_ROOT/go/src/github.com/gol
     git fetch --all --tags --prune && \
     git checkout tags/$PROTOC_GEN_GO_VERSION && \
     go install ./protoc-gen-go && \
-    cp $APP_ROOT/go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go && \
+    echo "go/bin: ---->" && ls -Al $APP_ROOT/go/bin && \
+    echo "usr/local: ---->" && ls -Al /usr/local/bin && \
     rm -rf $APP_ROOT/go/src
+    #cp $APP_ROOT/go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go && \
 
 ## Install protoc-gen-grpc-web
 
