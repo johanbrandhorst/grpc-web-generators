@@ -93,7 +93,7 @@ RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION  && \
 
 RUN pip3 install grpcio-tools
 
-RUN echo "usr/local/lib: ---->" && ls -Al /usr/local/lib \
+RUN echo "usr/local/lib: ---->" && ls -Al /usr/local/lib &&\
     echo "usr/local/bin: ---->" && ls -Al /usr/local/bin
 
 # deployment stage: using previous build to reduce image size
