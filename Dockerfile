@@ -51,8 +51,9 @@ RUN git clone https://github.com/golang/protobuf $APP_ROOT/go/src/github.com/gol
     git fetch --all --tags --prune && \
     git checkout tags/$PROTOC_GEN_GO_VERSION && \
     go install ./protoc-gen-go && \
+    cp $APP_ROOT/go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go && \
     rm -rf $APP_ROOT/go/src
-    #cp $APP_ROOT/go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go && \
+   
 
 ## Install protoc-gen-grpc-web
 ENV PROTOC_GEN_GRPC_WEB_VERSION 1.4.2 
@@ -102,9 +103,9 @@ WORKDIR ${APP_ROOT}
 # copy all built files to new image
 
 # protoc etc.
-COPY --from=build /usr/local/bin /usr/local/bin
+COPY --from=build /usr/local/bin/ /usr/local/bin/
 # for google/protobuf
-COPY --from=build /usr/local/include /usr/local/include 
+COPY --from=build /usr/local/include/ /usr/local/include/ 
 
 COPY --from=build $APP_ROOT/package.json $APP_ROOT/package.json
 
@@ -112,6 +113,6 @@ RUN npm install --production
 
 # copy python files
 
-COPY  --from=build /usr/local/lib/python3.9/dist-packages /usr/local/lib/python3.9/dist-packages
+COPY  --from=build /usr/local/lib/python3.9/dist-packages/ /usr/local/lib/python3.9/dist-packages/
 
 
