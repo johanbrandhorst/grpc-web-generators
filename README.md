@@ -25,7 +25,7 @@ This is an updated version of [https://github.com/johanbrandhorst/grpc-web-gener
         --js_out=import_style=commonjs:/generated \
         --grpc-web_out=import_style=commonjs,mode=grpcwebtext:/generated \
         --grpc-python_out=/generated \
-        /protos/<my_proto_file>.proto
+        /protos/helloworld.proto
 
 
 ### Python

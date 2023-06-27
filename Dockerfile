@@ -14,13 +14,7 @@ FROM node:18.16.1-bullseye as build
 ENV DEBIAN_FRONTEND noninteractive \
     LANG=C.UTF-8 \
     PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PROTOBUF_VERSION=23.3 \
-    PROTOC_GEN_GO_VERSION=v1.5.3 \
-    PROTOC_GEN_GRPC_VERSION=2.0.4 \
-    PROTOC_GEN_TS_VERSION=0.15.0 \
-    PROTOC_GEN_GRPC_WEB_VERSION=1.4.2 
-
+    PYTHONDONTWRITEBYTECODE=1
 
 ARG APP_ROOT=/usr/app
 
@@ -42,6 +36,7 @@ RUN apt-get update && apt-get install -y \
     golang
 
 ## Install protoc
+ENV PROTOBUF_VERSION 23.3
 
 RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOBUF_VERSION/protoc-$PROTOBUF_VERSION-linux-x86_64.zip && \
     unzip protoc-$PROTOBUF_VERSION-linux-x86_64.zip -d /usr/local/ && \
@@ -49,6 +44,7 @@ RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOBU
 
 ## Install protoc-gen-go
 ## https://docs.docker.com/language/golang/build-images/
+ENV PROTOC_GEN_GO_VERSION v1.5.3
 
 RUN git clone https://github.com/golang/protobuf $APP_ROOT/go/src/github.com/golang/protobuf && \
     cd $APP_ROOT/go/src/github.com/golang/protobuf && \
@@ -59,6 +55,7 @@ RUN git clone https://github.com/golang/protobuf $APP_ROOT/go/src/github.com/gol
     #cp $APP_ROOT/go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go && \
 
 ## Install protoc-gen-grpc-web
+ENV PROTOC_GEN_GRPC_WEB_VERSION 1.4.2 
 
 RUN git clone https://github.com/grpc/grpc-web /github/grpc-web && \
     cd /github/grpc-web && \
@@ -68,22 +65,24 @@ RUN git clone https://github.com/grpc/grpc-web /github/grpc-web && \
     rm -rf /github
 
 ## Install protoc-gen (npm)
-
+ENV PROTOC_GEN_GRPC_VERSION 2.0.4
 #google-protobuf@$PROTOBUF_VERSION
+
 
 RUN npm install protoc-gen-grpc@$PROTOC_GEN_GRPC_VERSION  && \
     cp ./node_modules/.bin/protoc-gen-grpc /usr/local/bin/protoc-gen-grpc
     
 
 ## Install protoc-gen-ts
+ENV PROTOC_GEN_TS_VERSION 0.15.0
 
 # google-protobuf@$PROTOBUF_VERSION
+
 
 RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION  && \
     cp ./node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
     
-## Install protoc plugin for python
-
+## Install python protoc plugin
 RUN pip3 install grpcio-tools
 
 # deployment stage: using previous build to reduce image size
