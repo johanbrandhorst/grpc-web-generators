@@ -16,19 +16,24 @@ This is an updated version of [https://github.com/johanbrandhorst/grpc-web-gener
 
 ## Usage
 
-    docker compose run protocomp bash
-
 # building all APIs
 
-    docker compose run protocomp protoc -I /protos \
+    docker compose run --rm protocomp protoc -I/protos \
         --go_out=plugins=grpc,paths=source_relative:/generated \
         --js_out=import_style=commonjs:/generated \
         --grpc-web_out=import_style=commonjs,mode=grpcwebtext:/generated \
-        --grpc-python_out=/generated \
         /protos/helloworld.proto
+
+    docker compose down
 
 
 ### Python
+    docker compose run --rm protocomp python -m grpc_tools.protoc -I/protos \
+        --python_out=/generated \
+        --pyi_out=/generated \
+        --grpc_python_out=/generated \
+        /protos/helloworld.proto
 
-### gRPC-Web
+## Troubleshooting
 
+    docker compose run protocomp bash

@@ -70,7 +70,7 @@ ENV PROTOC_GEN_GRPC_VERSION 2.0.4
 
 
 RUN npm install protoc-gen-grpc@$PROTOC_GEN_GRPC_VERSION  && \
-    cp ./node_modules/.bin/protoc-gen-grpc /usr/local/bin/protoc-gen-grpc
+    ln -s $APP_ROOT/node_modules/.bin/protoc-gen-grpc /usr/local/bin/protoc-gen-grpc
     
 
 ## Install protoc-gen-ts
@@ -80,14 +80,14 @@ ENV PROTOC_GEN_TS_VERSION 0.15.0
 
 
 RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION  && \
-    cp ./node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
+    ln -s $APP_ROOT/node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
     
 ## Install python protoc plugin
 RUN pip3 install grpcio-tools
 
 # deployment stage: using previous build to reduce image size
 
-FROM node:18.16.1-bullseye-slim
+FROM node:18.16.1-bullseye
 
 ENV DEBIAN_FRONTEND noninteractive \
     LANG=C.UTF-8 \
