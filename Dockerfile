@@ -92,6 +92,11 @@ RUN pip3 install grpcio-tools
 
 FROM node:18.16.1-bullseye-slim
 
+ENV DEBIAN_FRONTEND noninteractive \
+    LANG=C.UTF-8 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    APP_ROOT=/usr/app
 
 WORKDIR $APP_ROOT
 
