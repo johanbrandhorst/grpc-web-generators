@@ -50,7 +50,7 @@ RUN git clone https://github.com/golang/protobuf $APP_ROOT/go/src/github.com/gol
     git checkout tags/$PROTOC_GEN_GO_VERSION && \
     go install ./protoc-gen-go && \
     echo "go/bin: ---->" && ls -Al $APP_ROOT/go && \
-    echo "usr/local: ---->" && ls -Al /usr/local/bin && \
+    echo "usr/local/bin: ---->" && ls -Al /usr/local/bin && \
     rm -rf $APP_ROOT/go/src
     #cp $APP_ROOT/go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go && \
 
@@ -93,9 +93,12 @@ RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION  && \
 
 RUN pip3 install grpcio-tools
 
+RUN echo "usr/local/lib: ---->" && ls -Al /usr/local/lib \
+    echo "usr/local/bin: ---->" && ls -Al /usr/local/bin
+
 # deployment stage: using previous build to reduce image size
 
-FROM node:18.16.1-bullseye-slim
+FROM node:18.16.1-bullseye
 
 ENV DEBIAN_FRONTEND noninteractive \
     LANG=C.UTF-8 \
