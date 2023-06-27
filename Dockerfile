@@ -10,10 +10,13 @@ FROM node:18.16.1-bullseye as build
 ENV DEBIAN_FRONTEND noninteractive \
     LANG=C.UTF-8 \
     PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    APP_ROOT=/usr/app
+    PYTHONDONTWRITEBYTECODE=1 
 
-WORKDIR $APP_ROOT
+ARG APP_ROOT=/usr/app
+
+ENV APP_ROOT=${APP_ROOT}
+
+WORKDIR ${APP_ROOT}
 #COPY ./ /usr/app
 
 RUN apt-get update && apt-get install -y \
@@ -95,10 +98,12 @@ FROM node:18.16.1-bullseye-slim
 ENV DEBIAN_FRONTEND noninteractive \
     LANG=C.UTF-8 \
     PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    APP_ROOT=/usr/app
+    PYTHONDONTWRITEBYTECODE=1
 
-WORKDIR $APP_ROOT
+ARG APP_ROOT=/usr/app
+ENV APP_ROOT=${APP_ROOT}
+
+WORKDIR ${APP_ROOT}
 
 # copy all build files to new image
 
